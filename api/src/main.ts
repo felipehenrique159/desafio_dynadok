@@ -10,10 +10,13 @@ app.use('/api/clients', clientRouter);
 
 const PORT = process.env.PORT || 3001;
 
-mongoose.connect(process.env.MONGO_URL || '')
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`API running on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`API running on port ${PORT}`);
+  mongoose.connect(process.env.MONGO_URL || '')
+    .then(() => {
+      console.log('Connected to MongoDB');
+    })
+    .catch((err) => {
+      console.error('Failed to connect to MongoDB:', err.message);
     });
-  })
-  .catch(console.error);
+});
