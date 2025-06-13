@@ -8,7 +8,7 @@ export class CreateClientUseCase {
   async execute(client: Client): Promise<Client> {
     const data = await this.clientRepository.create(client);
     await publishClientQueue({
-      'type': 'created',
+      'type': 'Created client',
       'data': data
     });
     return data;
