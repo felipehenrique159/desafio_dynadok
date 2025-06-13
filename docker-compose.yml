@@ -1,0 +1,64 @@
+services:
+  api:
+    build: './api'
+    container_name: api
+    ports:
+      - '3001:3001'
+    environment:
+      - MONGO_URL=mongodb://mongodb:27017/clients
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+    networks:
+      - rede
+
+  mongodb:
+    image: mongo:5
+    container_name: mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - rede
+
+  redis:
+    image: redis:6
+    container_name: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - rede
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - rede
+
+  worker:
+    build: './worker_rabbitmq'
+    container_name: worker_rabbitmq
+    environment:
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - rabbitmq
+    networks:
+      - rede
+
+volumes:
+  mongo-data:
+
+networks:
+  rede:
+    driver: bridge

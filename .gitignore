@@ -1,2 +1,3 @@
 /api/node_modules
+/worker_rabbitmq/node_modules
 .env
