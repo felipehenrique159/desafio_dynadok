@@ -1,9 +1,12 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import 'dotenv/config';
+import clientRouter from './interfaces/http/routes/ClientRoutes';
 
 const app = express();
 app.use(express.json());
+
+app.use('/api/clients', clientRouter);
 
 const PORT = process.env.PORT || 3001;
 
