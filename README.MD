@@ -135,7 +135,7 @@ Lá você pode visualizar todos os endpoints, parâmetros, exemplos de requisiç
 
 ## Worker RabbitMQ
 
-O projeto inclui um worker (pasta `worker_rabbitmq`) que consome mensagens da fila `clients` do RabbitMQ e processa eventos de criação, atualização, consulta e remoção de clientes.
+O projeto inclui um worker (pasta `worker_rabbitmq`) que consome mensagens da fila `clients` do RabbitMQ e gera log sobre os eventos de criação, atualização, consulta e remoção de clientes.
 
 ## Como rodar o Worker RabbitMQ localmente (sem Docker)
 
