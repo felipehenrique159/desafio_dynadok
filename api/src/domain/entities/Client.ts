@@ -8,6 +8,7 @@ export class Client extends BaseEntity {
     public name: string,
     public email: string,
     public phone: string,
+    public id?: string
   ) {
     super();
     this.createdAt = new Date();

@@ -4,10 +4,14 @@ import { Client } from '../../../domain/entities/Client';
 
 export class MongoClientRepository implements IClientRepository {
   async create(data: Client): Promise<Client> {
-    const created = await ClientModel.create(data);
-    const obj = created.toObject();
-    return new Client(obj.name ?? '', obj.email ?? '', obj.phone ?? '');
-  }
+  const created = await ClientModel.create(data);
+  const obj = created.toObject();
+  const client = new Client(obj.name ?? '', obj.email ?? '', obj.phone ?? '');
+  client.id = obj._id?.toString();
+  client.createdAt = obj.createdAt;
+  client.updatedAt = obj.updatedAt;
+  return client;
+}
 
   async update(id: string, data: Partial<Client>): Promise<Client | null> {
     const updated = await ClientModel.findByIdAndUpdate(id, data, { new: true });
@@ -27,7 +31,14 @@ export class MongoClientRepository implements IClientRepository {
     const list = await ClientModel.find();
     return list.map(doc => {
       const obj = doc.toObject();
-      return new Client(obj.name ?? '', obj.email ?? '', obj.phone ?? '');
+      return new Client(obj.name ?? '', obj.email ?? '', obj.phone ?? '', obj._id?.toString());
     });
+  }
+
+  async delete(id: string): Promise<Client | null> {
+    const deleted = await ClientModel.findByIdAndDelete(id);
+    if (!deleted) return null;
+    const obj = deleted.toObject();
+    return new Client(obj.name ?? '', obj.email ?? '', obj.phone ?? '');
   }
 }
